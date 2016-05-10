@@ -2,6 +2,8 @@ import base64
 from Crypto.Cipher import AES
 from Crypto import Random
 import binascii
+import os
+
 
 BS = 16
 pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
@@ -20,9 +22,15 @@ def decrypt( encText, key ):
     cipher = AES.new(key, AES.MODE_CBC, iv )
     return unpad(cipher.decrypt( enc[16:] ))
 
-filename = 'test.txt'
+filename = 'P4182010_s.jpg'
 with open(filename) as f:
     content = f.read()
 key = "abcabcabcabcabca"# the length has to be multiple of 16
 encrypted = encrypt(content, key)
-print decrypt(encrypted , key)
+#print decrypt(encrypted , key)
+
+writepath = 'decrypted/'+filename
+
+mode = 'a' if os.path.exists(writepath) else 'w'
+with open(writepath, mode) as f:
+    f.write(decrypt(encrypted , key))
