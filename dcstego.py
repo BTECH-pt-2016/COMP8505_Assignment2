@@ -12,23 +12,23 @@ MODE = ""
 PATH_TO_DATA = ""
 
 USAGE = (
-    "USAGE:\n"
+    "\nUSAGE:\n"
     "   To hide data:\n"
     "       python dcstego.py -s -p <password> -c <path_to_cover_image> -o <path_to_output_image> -d <path_to_data>\n"
-    "       ex: python dcstego.py -s -p password -c 100.bmp -o stego/new.bmp -d samples/test.txt\n"
+    "       ex: python dcstego.py -s -p password -c 100.bmp -o stego/new.bmp -d samples/test.txt\n\n"
     "   To extract data:\n"
     "       python dcstego.py -e -p <password> -c <path_to_cover_image> \n"
-    "       ex: python dcstego.py -e -p password -c stego/new.bmp \n"
+    "       ex: python dcstego.py -e -p password -c stego/new.bmp \n\n\n"
 
 
-    "SWITCHES\n"
+    "SWITCHES:\n"
     "   -s  hide a data into a cover image\n"
     "   -e  extract a hidden data from a cover image\n"
     "   -p  password to hide or extract data\n"
     "   -c  set cover image path. Image has to be BMP\n"
     "   -o  set path for a stego image. The path has to end with .BMP\n"
     "   -d  set data to be hidden in cover image\n"
-    "   -h  print usage"
+    "   -h  print usage\n"
     )
 
 
@@ -54,7 +54,7 @@ def parseArg():
                 PATH_TO_DATA = sys.argv[i+1]
             elif switch == 'h':
                 print USAGE
-                return
+                return "done"
 
         else:
             continue
@@ -127,7 +127,8 @@ def extract(coverImage):
 
 
 def main():
-    parseArg()
+    if parseArg() == "done":
+        sys.exit()
     if validation() == "done":
         sys.exit()
     else:
