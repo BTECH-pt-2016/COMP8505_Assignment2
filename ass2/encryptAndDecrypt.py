@@ -20,7 +20,7 @@ def toTernary(n):
         return toTernary(n / 3) + str(c)
     else:
         return str(c)
-""
+
 def encrypt( text, key ):
     text = pad(text)
     iv = Random.new().read( AES.block_size )
