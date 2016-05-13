@@ -1,0 +1,13 @@
+import sys
+import os
+from PIL import Image
+from dcimage import *
+
+
+
+KEY = ""# the length has to be multiple of 16
+PATH_COVER_IMAGE = ""
+PATH_STEGO_IMAGE = ""
+PATH_FOLDER_EXTRACTED = "hiddenData/"
+MODE = ""
+PATH_TO_DATA = ""

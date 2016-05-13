@@ -1,5 +1,5 @@
 from PIL import Image
-from encryptAndDecrypt import *
+from dcutils import *
 
 
 # takes the current R or G or B Color as the first argument (0 - 255)
@@ -64,8 +64,7 @@ def stegoImage(myImage, encryptedString):
             # add leading 0
             base3NumStr = "{:0>3}".format(base3NumStr)
 		    # this is a for loop that loops through the colors R G and B
-            # going backwords 2,1,0
-            for c in range(2,-1,-1):
+            for c in range(0,3):
 			    # below im requesting the nearest color to achieve "2" in base 3.
 			    # NOTE: colorChange returns the colorValue which will produce the value "2" once it goes through modulas diviosn
                 newRGB[c] = colorChange(pixel[c], int(base3NumStr[c]), 3)
@@ -93,43 +92,3 @@ def unStegoImage(myImage):
             resultStr+=int2base(int(base3String,3),16)[-1]
 		    #IMPORTANT NOTE: Pillow likes to use tuples a lot
     return resultStr
-
-
-if len(sys.argv) != 2:
-    print "please put file path"
-    print "Usage: python encryptAndDecrypt.py <filepath>"
-    sys.exit()
-else:
-    filename = sys.argv[1]
-
-with open(filename) as f:
-    content = f.read()
-key = "abcabcabcabcabca"# the length has to be multiple of 16
-
-#encrypt contents with file name
-encrypted = encrypt(content+"^"+filename.split("/")[-1], key)
-encryptedString = str(encrypted)
-
-myImage = Image.open("100.bmp")
-
-if len(encrypted) > myImage.size[0]* myImage.size[1]:
-    print "error the data is too big"
-    sys.exit()
-
-#making stego image
-stegoImage(myImage, encryptedString)
-myImage.save("new.bmp")
-
-#read new image and unstego it
-newImage = Image.open("new.bmp")
-hiddenData = unStegoImage(newImage)
-print encryptedString
-print hiddenData
-
-decrypted = decrypt(hiddenData , key)
-filename2 = decrypted.split("^")[-1]
-writepath = 'decrypted/'+filename2
-content2 =  decrypted[:-len(filename2)-1]
-
-with open(writepath, 'w') as f:
-    f.write(content2)
